@@ -1,4 +1,4 @@
-// using function to create dom elements
+
 function element(tag, classname, id, text) {
     let tags = document.createElement(tag);
     tags.classList = classname;
@@ -6,20 +6,15 @@ function element(tag, classname, id, text) {
     tags.innerHTML = text;
     return tags;
   }
-  
-  //creating a base (container ,heading ,row)
-  
+
   let container = element("div", "container", "", "");
   const h1 = element("h1", "text-center", "title", "Countries Weather Details");
   const row = element("div", "row", "", "");
   
-  //fetch part (restcountries)
   const response = fetch("https://restcountries.com/v3.1/all");
   response
     .then((data) => data.json())
     .then((result) => {
-      //console.log(result)
-      //allocating country details to the card
       for (let i = 0; i < result.length; i++) {
         const col = document.createElement("div");
         col.classList = "col-sm-6 col-md-4 col-lg-4 col-xl-4";
@@ -41,27 +36,18 @@ function element(tag, classname, id, text) {
         `;
         row.append(col);
       }
-      //Button logic for appending weather details from weather api
-      let buttons = document.querySelectorAll("button"); //select all the button from the api
-      //console.log(buttons);
+      let buttons = document.querySelectorAll("button"); 
       buttons.forEach((btn, index) => {
         btn.addEventListener("click", () => {
-          //latlng splitting for weather api
           let latlng = result[index].latlng;
-          //console.log(latlng);
           let lat = latlng[0];
           let lon = latlng[1];
-          //console.log(lat);
-          //console.log(lon);
-  
-          //weather api getting and updating the lat,lon,api key to the api
           let weatherApi = fetch(
             `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=bc47567f1e44df16c87b34d909e1065b`
           );
           weatherApi
             .then((data1) => data1.json())
             .then((res) => {
-              //console.log(res);
               alert(
                 `Weather of ${result[index].name.common} is ${Math.floor(
                   res.main.temp
@@ -71,7 +57,6 @@ function element(tag, classname, id, text) {
         });
       });
     });
-  
-  // appending part
+
   container.append(row);
   document.body.append(h1, container);
